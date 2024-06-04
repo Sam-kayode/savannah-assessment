@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
 import { User } from "./types";
 import axios from "axios";
+import { useToast } from "vue-toastification";
 
 const BASE_URL = "https://api.github.com";
 
@@ -8,11 +9,10 @@ const searchTerm = ref<string>("");
 
 const users = ref<User[]>([]);
 
-
 const sortBy = ref<string>("Login");
 
 const allUsers = computed(() => {
-  return sortUsers(users.value)
+  return sortUsers(users.value);
 });
 
 const centralise = ref<boolean>(true);
@@ -38,6 +38,8 @@ function sortUsers(users) {
 }
 
 export const useUserModule = () => {
+  const toast = useToast();
+
   const handleGetUsers = async () => {
     try {
       loading.value = true;
@@ -51,7 +53,7 @@ export const useUserModule = () => {
       centralise.value = false;
       users.value = [...completeUsers];
     } catch (error) {
-      console.log(error);
+      toast.error(error.message);
     }
   };
 
@@ -75,7 +77,7 @@ export const useUserModule = () => {
       loading.value = false;
       users.value = [...users];
     } catch (error) {
-      console.log(error);
+      toast.error(error.message || 'An error occured');
     }
   };
 
@@ -90,6 +92,6 @@ export const useUserModule = () => {
     currentPage,
     totalUsers,
     sortBy,
-    allUsers
+    allUsers,
   };
 };

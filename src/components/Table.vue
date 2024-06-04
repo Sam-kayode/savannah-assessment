@@ -13,22 +13,35 @@
             </td>
             <td>{{ user.login }}</td>
             <td>{{ user.type }}</td>
+            <td width="250"><v-btn class="p-3 text-capitalize" flat @click="viewUserDetails(user)">View Details</v-btn>
+            </td>
           </tr>
 
         </tbody>
       </table>
     </div>
-    <TablePagination/>
+    <TablePagination />
   </div>
 
 </template>
 
 <script setup lang="ts">
-import { useUserModule } from "../helpers";
+import { useRouter } from "vue-router";
+import type { User } from "../helpers";
+import { useUserModule, useDetailsModule } from "../helpers";
 import TableHeader from "./TableHeader.vue";
 import TablePagination from "./TablePagination.vue";
 
 const { allUsers } = useUserModule()
+const { selectedUser } = useDetailsModule()
+
+const router = useRouter()
+
+const viewUserDetails = (user: User) => {
+  selectedUser.value = user
+  router.push('/details')
+}
+
 </script>
 
 <style scoped lang="scss">
@@ -50,7 +63,7 @@ tr:nth-child(even) {
 }
 
 td {
-  padding:10px;
+  padding: 10px;
   vertical-align: middle;
   border-bottom: solid 1px rgba(255, 255, 255, 0.1);
 

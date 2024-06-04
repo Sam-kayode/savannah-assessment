@@ -7,6 +7,7 @@
                         <th>Avatar</th>
                         <th>Login</th>
                         <th>Type</th>
+                        <th  width="250">Action</th>
                     </tr>
                 </thead>
             </table>
